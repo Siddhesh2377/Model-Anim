@@ -1,31 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     tools:context=".MainActivity">
 
-
+    <!-- SceneView occupying most of the screen -->
     <com.google.ar.sceneform.SceneView
         android:id="@+id/transparentSceneView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/bottom"
         android:background="@android:color/transparent" />
 
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/start_stop"
-        android:layout_width="wrap_content"
+    <!-- Bottom section with Slider and Buttons -->
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:text="@string/start"
-        android:paddingHorizontal="44dp"
-        android:layout_margin="12dp"
-        app:icon="@drawable/rounded_play_circle_24"/>
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Slider -->
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:value="1f"
+            android:valueFrom="0f"
+            android:valueTo="10" />
+
+        <!-- Buttons for Silent and Surprise -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/Silent"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Silent"
+                app:icon="@drawable/rounded_play_circle_24"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/Surprise"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Surprise"
+                app:icon="@drawable/rounded_play_circle_24"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
