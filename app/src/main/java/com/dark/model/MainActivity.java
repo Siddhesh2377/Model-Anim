@@ -12,6 +12,8 @@ import com.dark.model.databinding.ActivityMainBinding;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.Color;
+import com.google.ar.sceneform.rendering.Light;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 
 import java.util.Objects;
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
         binding.transparentSceneView.setTransparent(true);
         loadModels();
 
+        binding.transparentSceneView.getRenderer().getFilamentView().getBloomOptions().strength = 0f;
+        binding.transparentSceneView.enableDebug(true);
+
+
 
         binding.slider.addOnChangeListener((slider, value, fromUser) -> {
             // Update position as the slider value changes
@@ -40,27 +46,27 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        binding.Silent.setOnClickListener(view -> {
-            if (silent.isPaused() || !silent.isRunning()) {
-                // Ensure Surprise animation is stopped smoothly
-                surprise.end();
-                surprise.removeAllListeners(); // Remove lingering listeners for smoothness
-
-                // Start Silent animation
-                silent.start();
-            }
-        });
-
-        binding.Surprise.setOnClickListener(view -> {
-            if (surprise.isPaused() || !surprise.isRunning()) {
-                // Ensure Silent animation is stopped smoothly
-                silent.end();
-                silent.removeAllListeners();
-
-                // Start Surprise animation
-                surprise.start();
-            }
-        });
+//        binding.Silent.setOnClickListener(view -> {
+//            if (silent.isPaused() || !silent.isRunning()) {
+//                // Ensure Surprise animation is stopped smoothly
+//                surprise.end();
+//                surprise.removeAllListeners(); // Remove lingering listeners for smoothness
+//
+//                // Start Silent animation
+//                silent.start();
+//            }
+//        });
+//
+//        binding.Surprise.setOnClickListener(view -> {
+//            if (surprise.isPaused() || !surprise.isRunning()) {
+//                // Ensure Silent animation is stopped smoothly
+//                silent.end();
+//                silent.removeAllListeners();
+//
+//                // Start Surprise animation
+//                surprise.start();
+//            }
+//        });
 
     }
 
@@ -92,11 +98,22 @@ public class MainActivity extends AppCompatActivity {
                 modelNode.setLocalRotation(Quaternion.axisAngle(new Vector3(0f, -3.08f, 0f), 35));
                 modelNode.setLocalPosition(new Vector3(0f, -1f, -3.5f));
                 binding.transparentSceneView.getScene().addChild(modelNode);
-                silent = modelNode.getRenderableInstance().animate("silent");
+               // silent = modelNode.getRenderableInstance().animate("silent");
                 silent.setRepeatMode(ValueAnimator.RESTART);
 
-                surprise = modelNode.getRenderableInstance().animate("surprise");
+                surprise = modelNode.getRenderableInstance().animate(false);
+                surprise.start();
                 surprise.setRepeatMode(ValueAnimator.RESTART);
+
+                // Add a directional light to the scene
+                Node lightNode = new Node();
+                lightNode.setParent(binding.transparentSceneView.getScene());
+                Light light = Light.builder(Light.Type.DIRECTIONAL)
+                        .setColor(new Color(1.0f, 1.0f, 1.0f))
+                        .setIntensity(500f)  // Adjust intensity as needed
+                        .build();
+                lightNode.setLight(light);
+
 
             } catch (InterruptedException | ExecutionException ignore) {
 
